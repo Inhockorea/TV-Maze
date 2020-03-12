@@ -51,7 +51,7 @@ function populateShows(shows) {
            <img class="card-img-top" src="${show.image}">
              <h5 class="card-title">${show.name}</h5>
              <p class="card-text">${show.summary}</p>
-             <button class="episode-button"> Episodes </button>
+             <button class=episode-button id=${show.id}> Episodes </button>
            </div>
          </div>
        </div>
@@ -99,7 +99,6 @@ async function getEpisodes(id) {
   }))
 
   return episodeList;
-  // TODO: return array-of-episode-info, as described in docstring above
 }
 
 function populateEpisodes(episodes) {
@@ -112,15 +111,19 @@ function populateEpisodes(episodes) {
     );
 
     $episodesList.append($item);
-    // $("#episodes-area").css("display", "block");
+    // $("#episodes-area").show();
+    $("#episodes-area").css("display", "block");
   }
 }
 
-$(".episode-button").on("click", async function addEpisodes () {
-  let query = $("#search-query").val();
-  let showObj = searchShows(query);
-  let showId = showObj.id;
-  let episodes = await getEpisodes(showId);
+$(".container").on("click",".episode-button", addEpisodes);
 
-  populateEpisodes(episodes);
-});
+async function addEpisodes (evt) {
+ 
+    let showId =  evt.target.id
+
+    console.log(showId);
+    let episodes = await getEpisodes(showId);
+  
+    populateEpisodes(episodes);
+  }
